@@ -1,0 +1,30 @@
+{
+  "name": "tutorvirtualumad",
+  "version": "1.0.0",
+  "description": "Plataforma de tutor virtual para que la Universidad Madero Puebla proporcione orientación académica suplementaria, estandarizada, de calidad y bajo demanda a los estudiantes de ingeniería, mediante una aplicación web con un chatbot de IA accesible e interactivo, con el fin de fortalecer su experiencia educativa.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebaltalmv/TutorVirtualUMAD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ebaltalmv/TutorVirtualUMAD/issues"
+  },
+  "homepage": "https://github.com/ebaltalmv/TutorVirtualUMAD#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
