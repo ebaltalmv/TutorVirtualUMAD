@@ -2,16 +2,24 @@
   "name": "tutorvirtualumad",
   "version": "1.0.0",
   "description": "Plataforma de tutor virtual para que la Universidad Madero Puebla proporcione orientación académica suplementaria, estandarizada, de calidad y bajo demanda a los estudiantes de ingeniería, mediante una aplicación web con un chatbot de IA accesible e interactivo, con el fin de fortalecer su experiencia educativa.",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ebaltalmv/TutorVirtualUMAD.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "UMAD",
+    "Tutor IA",
+    "Gemini",
+    "Node.js",
+    "SQLite"
+  ],
+  "author": "Emmanuel Baltazar López",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ebaltalmv/TutorVirtualUMAD/issues"
