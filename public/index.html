@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Virtual UMAD</title>
+    <meta name="description" content="Tutor virtual con IA para estudiantes de la Universidad Madero (UMAD). Orientación académica interactiva y personalizada.">
+
+    <!-- Librería para renderizar Markdown -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Enlace a tu archivo CSS separado -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- SECCIÓN DE AUTENTICACIÓN -->
+    <div id="seccion-auth">
+        <!-- Panel Login -->
+        <div id="panel-login" class="auth-card">
+            <h2>Iniciar Sesión</h2>
+            <input type="email" id="login-correo" placeholder="correo@umad.edu.mx" class="input-form">
+            <input type="password" id="login-pass" placeholder="Contraseña" class="input-form">
+            <button onclick="iniciarSesion()" class="btn-form">Ingresar</button>
+            <div class="auth-links">
+                <p>¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Regístrate aquí</a></p>
+            </div>
+            <p id="mensaje-auth" style="color: #ff8a8a; margin-top: 15px; text-align:center; font-size:0.9em;"></p>
+        </div>
+
+        <!-- Panel Registro -->
+        <div id="panel-registro" class="auth-card" style="display: none;">
+            <h2>Registro Alumno</h2>
+            <input type="text" id="reg-nombre" placeholder="Nombre completo" class="input-form">
+            <input type="email" id="reg-correo" placeholder="correo@umad.edu.mx" class="input-form">
+            <input type="password" id="reg-pass" placeholder="Crear Contraseña" class="input-form">
+
+            <label style="display:block; margin-bottom:5px; color:#aaa; font-size: 0.9em;">Selecciona tu
+                carrera:</label>
+            <select id="reg-carrera" class="input-form">
+                <option value="Ingeniería de Software">Ingeniería de Software</option>
+                <option value="Derecho">Derecho</option>
+                <option value="Diseño Gráfico">Diseño Gráfico</option>
+            </select>
+            <button onclick="registrar()" class="btn-form">Registrarme</button>
+            <div class="auth-links">
+                <p>¿Ya tienes cuenta? <a href="#" onclick="mostrarLogin()">Inicia Sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN PRINCIPAL DE LA APP (3 COLUMNAS) -->
+    <div id="seccion-app">
+        <!-- 1. Panel Lateral Izquierdo (Historial) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <button class="btn-nuevo-chat" onclick="nuevoChat()">
+                    <span>+</span> Nuevo chat
+                </button>
+            </div>
+
+            <div class="switch-container">
+                <label class="switch-voz">
+                    <input type="checkbox" id="toggle-voz" checked>
+                    <span class="slider"></span>
+                </label>
+                <span style="font-size: 0.85em; color: #aaa;">Lectura de voz</span>
+            </div>
+
+            <div class="sidebar-content">
+                <p style="color: #aaa; font-size: 0.8em; margin-bottom: 10px; padding-left: 10px;">Chats Anteriores</p>
+                <div id="lista-historial-sidebar"></div>
+            </div>
+
+            <div class="tutor-info">
+                <div class="alumno-details">
+                    <strong id="info-nombre" style="color:#e3e3e3; display:block;">Alumno</strong>
+                    <span id="info-carrera">Carrera</span>
+                </div>
+                <button class="btn-cuenta" onclick="mostrarCuenta()" id="btn-ir-cuenta">
+                    Mi Cuenta
+                </button>
+            </div>
+        </aside>
+
+        <!-- 2. Área Principal Central (Chat) -->
+        <main class="main-content" id="main-chat">
+            <header class="chat-header">
+                <div class="header-info">
+                    <h3>Tutor Virtual UMAD</h3>
+                    <span>Asistente en línea</span>
+                </div>
+            </header>
+
+            <!-- Área donde aparecen los mensajes y la bienvenida -->
+            <div id="area-chat" class="area-chat">
+                <!-- El contenido de bienvenida se inyectará aquí dinámicamente -->
+            </div>
+
+            <!-- Input Inferior -->
+            <div class="input-container-wrapper">
+                <div class="input-container">
+                    <input type="text" id="input-pregunta" placeholder="Escribe tu duda aquí..." autocomplete="off">
+                    <button id="btn-enviar" class="btn-enviar">▶</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- 2b. Sección de Gestión de Cuenta (oculta por defecto) -->
+        <section id="seccion-cuenta">
+            <header class="cuenta-header">
+                <h3>⚙️ Mi Cuenta</h3>
+                <button class="btn-volver-chat" onclick="volverAlChat()">
+                    ← Volver al Chat
+                </button>
+            </header>
+
+            <div class="cuenta-body">
+                <!-- Avatar con inicial -->
+                <div class="cuenta-avatar" id="cuenta-avatar-inicial">E</div>
+
+                <!-- Card: Información Personal -->
+                <div class="cuenta-card">
+                    <h4>Información Personal</h4>
+                    <div class="cuenta-field">
+                        <label>Correo institucional</label>
+                        <input type="email" id="cuenta-correo" disabled>
+                    </div>
+                    <div class="cuenta-field">
+                        <label>Nombre completo</label>
+                        <input type="text" id="cuenta-nombre" placeholder="Tu nombre completo">
+                    </div>
+                    <div class="cuenta-field">
+                        <label>Carrera</label>
+                        <select id="cuenta-carrera" class="input-form" style="margin-bottom:0;">
+                            <option value="Ingeniería de Software">Ingeniería de Software</option>
+                            <option value="Derecho">Derecho</option>
+                            <option value="Diseño Gráfico">Diseño Gráfico</option>
+                        </select>
+                    </div>
+                    <button class="btn-cuenta-action btn-guardar" onclick="actualizarPerfil()" style="margin-top: 10px;">
+                        Guardar Cambios
+                    </button>
+                    <p id="msg-perfil" class="cuenta-mensaje"></p>
+                </div>
+
+                <!-- Card: Cambiar Contraseña -->
+                <div class="cuenta-card">
+                    <h4>Cambiar Contraseña</h4>
+                    <div class="cuenta-field">
+                        <label>Contraseña actual</label>
+                        <input type="password" id="cuenta-pass-actual" placeholder="Ingresa tu contraseña actual">
+                    </div>
+                    <div class="cuenta-field">
+                        <label>Nueva contraseña</label>
+                        <input type="password" id="cuenta-pass-nueva" placeholder="Ingresa la nueva contraseña">
+                    </div>
+                    <div class="cuenta-field">
+                        <label>Confirmar nueva contraseña</label>
+                        <input type="password" id="cuenta-pass-confirmar" placeholder="Repite la nueva contraseña">
+                    </div>
+                    <button class="btn-cuenta-action btn-guardar" onclick="cambiarPasswordCuenta()">
+                        Cambiar Contraseña
+                    </button>
+                    <p id="msg-password" class="cuenta-mensaje"></p>
+                </div>
+
+                <!-- Card: Sesión -->
+                <div class="cuenta-card">
+                    <h4>Sesión</h4>
+                    <button class="btn-cuenta-action btn-cerrar-sesion" onclick="cerrarSesion()">
+                        Cerrar Sesión
+                    </button>
+                </div>
+
+                <!-- Card: Zona de Peligro -->
+                <div class="cuenta-card" style="border-color: rgba(244, 67, 54, 0.2);">
+                    <h4 style="color: #ff6b6b;">Eliminar cuenta</h4>
+                    <p style="color: #888; font-size: 0.9em; margin-bottom: 15px;">
+                        Esta acción eliminará permanentemente tu cuenta y todo tu historial de chats.
+                        No se puede deshacer.
+                    </p>
+                    <button class="btn-cuenta-action btn-eliminar-cuenta" onclick="confirmarEliminarCuenta()">
+                        Eliminar mi cuenta
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Panel Lateral Derecho (Avatar) -->
+        <aside class="right-panel">
+            <div class="avatar-container">
+                <img id="avatar" src="assets/boca_cerrada.png" alt="Tutor UMAD">
+                <div class="avatar-status">
+                    <div class="status-dot"></div>
+                    <span>Tutor en línea</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Modal de confirmación para eliminar cuenta -->
+    <div class="modal-overlay" id="modal-eliminar">
+        <div class="modal-box">
+            <h4>¿Eliminar tu cuenta?</h4>
+            <p>Se eliminará permanentemente tu cuenta, todos tus datos personales y todo tu historial de conversaciones. Esta acción <strong style="color:#ff6b6b;">no se puede deshacer</strong>.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancelar" onclick="cerrarModalEliminar()">Cancelar</button>
+                <button class="modal-btn modal-btn-eliminar" onclick="eliminarCuenta()">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enlace a tu archivo JS separado al final del body -->
+    <script src="js/app.js"></script>
+</body>
+
+</html>
