@@ -1,8 +1,8 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-// Ruta relativa del archivo de base de datos
-const dbPath = path.resolve(__dirname, '../umad_tutor.db');
+// Ruta del archivo de base de datos (Soporta variables de entorno para Fly.io)
+const dbPath = process.env.DB_PATH || path.resolve(__dirname, '../umad_tutor.db');
 
 /**
  * <summary>
